@@ -25,7 +25,7 @@ library(future.apply)
 # die Minute, welche zum Zeitstempel endet. Der Zeitstempel ist vor dem Jahr 2000 in MEZ gegeben, ab dem
 # Jahr 2000 in UTC
 
-load("C:/Users/mberger.PC12599/HESSENBOX/GitHub/FDA-Covariance-Estimator/data/weather_data_nuremberg.RData")
+load("data/weather_data_nuremberg.RData")
 N$DATUM = str_split_i(N$MESS_DATUM, pattern = " ", i = 1) |> ymd()
 
 tage = c(1, 4, 8, 12, 15, 18, 22, 25, 29)
@@ -34,12 +34,15 @@ N = N |>
   as_tibble() |> 
   filter(TAG %in% tage) 
 
+# Temperature curves of all months 
+# not contained in paper
 N |>  
   filter(TAG %in% c(1, 8, 15, 22, 29)) |> 
   ggplot() +
   geom_line(aes(x = UHRZEIT, y = TT_10, group = JAHR*TAG, colour = JAHR), alpha = .4) +
   facet_wrap(MONAT ~.)
 
+# Temperature curves of August
 N |>  
   filter(TAG %in% c(1, 15, 29), 
          MONAT == 8) |> 
@@ -48,6 +51,7 @@ N |>
   labs(y = "Temp. in C°", x = "hours", title = "Temp. in August", colour = "year") + 
   theme(text = element_text(size = 18)) 
 
+# New representation of data
 N_wide = N |> 
   filter(TAG %in% tage) |>  # Beschraenkung auf nicht aufeinanderfolgende Tage
   mutate(UHRZEIT = as.character(UHRZEIT)) |> 
@@ -61,12 +65,13 @@ Y = N_wide |>
   select(-(1:3))
 
 Z = Y |> 
-  as.data.frame() |> # TODO: fix this in biLocPol
+  as.data.frame() |> 
   observation_transformation(na.rm = T)
 
 
 # h_cv = k_fold_cv(Y, H, K = 5, m = 1, h.parallel = T, h.parallel.environment = T, na.rm = T)
-p.eval = 72
+p.eval = 72 # evaluation every twenty minutes
+load("data/temperature_weights.RData")
 W = local_polynomial_weights(144, 0.2, p.eval, T, m = 1)
 g_hat = eval_weights(W, Z)
 var_hat = diag(g_hat)
@@ -245,7 +250,7 @@ cs2 = list(c(0, 1), c("lightblue", "darkred"))
 temp = matrix(diag(g_hat4), p.eval, p.eval)
 cor_hat4 = g_hat4 / sqrt( temp * t(temp) )
 
-
+#### Figure ####
 # all std deviations in one picture
 ggplot() + 
   geom_line(data    = var_est1, 
