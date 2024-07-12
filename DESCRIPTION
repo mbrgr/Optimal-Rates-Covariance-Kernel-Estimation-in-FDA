@@ -1,0 +1,20 @@
+Package: FDA-Covariance-Estimator
+Type: Package
+Title: FDA-Covariance-Estimator
+Version: 0.0.1
+Authors@R: c("Max Berger")
+Description: Bivariate local linear and local quadratic estimator. 
+License: GPL (>= 3)
+Suggests: 
+Depends: 
+    R (>= 3.5.0)
+Imports:
+     tidyverse,
+     locpol,
+     parallel,
+     future.apply,
+     goffda,
+     plotly,
+     interp
+LazyData: TRUE
+RoxygenNote: 7.1.1
