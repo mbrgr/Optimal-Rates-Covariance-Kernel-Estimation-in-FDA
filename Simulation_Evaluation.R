@@ -1,4 +1,4 @@
-load("C:/Users/mberger.PC12599/HESSENBOX/GitHub/FDA-Covariance-Estimator/data/data_20240529_bw_comp.RData")
+load("data/bw_comp_OU.RData")
 bw_comparison_tbl = Reduce(rbind, bw_comparison) |>
   as_tibble() |>
   rename(n = V1, p = V2, h = V3, sup.err = V4) |>
@@ -11,6 +11,7 @@ bw_comparison_tbl |>
   ylim(c(0, 0.65)) +
   theme(text = element_text(size = 18)) 
 
+# Figure 3:
 bw_comparison_tbl |> 
   filter(n == 400) |> 
   ggplot() + 
@@ -25,17 +26,9 @@ bw_comparison_tbl |>
   geom_line(aes(x = h, y = sup.err, linetype = p)) + 
   ylim(c(0, 0.9))
 
-bw_comparison_tbl |> 
-  filter(n == 400) |> 
-  ggplot() + 
-  geom_line(aes(x = h, y = sup.err, col = p, linetype = p)) + 
-  ylim(c(0, .55))
-
-
 min_h_tibble = bw_comparison_tbl |>
   group_by(n, p) |> 
   slice_min(sup.err) 
-
 
 bw_comparison_tbl |> 
   filter(n == 100) |> 
@@ -44,29 +37,9 @@ bw_comparison_tbl |>
   ylim(c(0.03, 0.65)) + 
   labs(title = "n = 100") 
 
-
-
-
 ##### One -Fold CV #####
-
-# one_fold_tbl = tibble(h = one_fold_cv %>% unlist(), p = gl(5, 1000, labels = p.seq))
-# one_fold_tbl %>% 
-#   ggplot(aes(y = h, x = p, col = p)) + 
-#   geom_boxplot()
-# 
-# n100_table = one_fold_tbl %>% 
-#   group_by_all() %>% 
-#   summarise(n = n()/1000)
-# 
-# n100_table %>% 
-#   ggplot(aes(h, n)) + 
-#   geom_point(size = 3) + 
-#   ylim(c(0, 0.1))+
-#   facet_wrap(.~p)
-
-## n = 400
-
-load("C:/Users/mberger.PC12599/HESSENBOX/GitHub/FDA-Covariance-Estimator/data/data_20240602_1fold_n400.RData")
+# not in paper
+load("data/one_fold_cv_n400_OU.RData")
 one_fold_tbl_n400 = tibble(h = one_fold_cv_n400 %>% unlist(), p = gl(3, 1000, labels = p.seq))
 one_fold_tbl_n400 %>% 
   ggplot(aes(y = h, x = p, col = p)) + 
@@ -88,7 +61,7 @@ one_fold_tbl_n400 %>%
 
 
 ##### five fold cv #####
-
+load("data/five_fold_cv_OU.RData")
 five_fold_tbl = tibble(h = five_fold_cv %>% unlist(), p = gl(5, 1000, labels = p.seq))
 five_fold_tbl %>% 
   ggplot(aes(y = h, x = p, col = p)) + 
@@ -98,6 +71,7 @@ five_fold_table = five_fold_tbl %>%
   group_by_all() %>% 
   summarise(n = n()/1000)
 
+# Figure in Appendix
 five_fold_table %>% 
   ggplot(aes(h, n)) + 
   geom_point(size = 3) + 
@@ -110,9 +84,9 @@ five_fold_tbl %>%
   summarise(.by = p, mean(h))
 
 ##### five fold cv #####
-
-load("C:/Users/mberger.PC12599/HESSENBOX/GitHub/FDA-Covariance-Estimator/data/data_20240604_5fold_n400.RData")
+# In Paper
 five_fold_tbl_n400 = tibble(h = five_fold_cv_n400 %>% unlist(), p = gl(5, 1000, labels = p.seq))
+# Figure 4
 five_fold_tbl_n400 %>% 
   ggplot(aes(y = h, x = p, col = p)) + 
   geom_boxplot(size = .6) + 
@@ -123,6 +97,7 @@ five_fold_table_n400 = five_fold_tbl_n400 %>%
   group_by_all() %>% 
   summarise(n = n()/1000)
 
+# Figure 5
 five_fold_table_n400 %>% 
   ggplot(aes(h, n)) + 
   geom_point(size = 3) + 
@@ -135,7 +110,7 @@ five_fold_tbl_n400 %>%
   summarise(.by = p, mean(h))
 
 ##### Error Decomposition #####
-load("C:/Users/mberger.PC12599/HESSENBOX/GitHub/FDA-Covariance-Estimator/data/data_20240604_error_decomp.RData")
+load("data/error_decomp.RData")
 # error_decomp_arr = error_decomp_arr[, -5, ]
 error_decomp_arr |> dimnames() = list(p.seq, c("eps", "dsc", "prc", "mix", "sup"), n.seq)
 error_decomp_tbl = error_decomp_arr |> as_tibble() |> 
@@ -150,6 +125,7 @@ error_decomp_tbl |>
   filter(n == 400, term == "sup") |> 
   print(n = 100) 
 
+# Figure 6
 error_decomp_tbl |> 
   filter(p != 75) |> 
   ggplot(aes(x = n, y = error, col = term, lty = term)) + 
@@ -158,20 +134,14 @@ error_decomp_tbl |>
   theme(text = element_text(size = 18)) +
   labs(y = "sup.error")
 
+# Not in Paper
 error_decomp_tbl |> 
   ggplot(aes(x = p, y = error, col = term, lty = term)) + 
   geom_line() + 
   facet_wrap(.~n)
 
-
-##### 2 Fold cv 2rv #####
-five_fold_cv_2rv |> table() |> plot()
-five_fold_cv_2rv |> boxplot()
-
-
-
 #### Estimator Comparison ####
-load("C:/Users/mberger.PC12599/HESSENBOX/GitHub/FDA-Covariance-Estimator/data/data_estimator_comparison.RData")
+load("data/estimator_comparison.RData")
 
 to_tibble = function(bw_comp, est = "mir", m = 1, Z = "OU") {
   Reduce(rbind, bw_comp) |>
@@ -184,6 +154,7 @@ to_tibble = function(bw_comp, est = "mir", m = 1, Z = "OU") {
            Z = Z)
 }
 
+# alrady contained in dataset
 OU_m0 = to_tibble(bw_comparison_OU_m0, m = 0)
 OU_m1 = to_tibble(bw_comparison_OU_m1)
 OU_m2 = to_tibble(bw_comparison_OU_m2, m = 2)
@@ -206,6 +177,7 @@ est_comp = rbind(OU_m0, OU_m1,
   mutate(estimator = as.factor(estimator), 
          m = as.factor(m), Z = as.factor(Z))
 
+# Figure 8a
 est_comp |> 
   filter(n == 100, p == 50, Z == "OU") |> 
   ggplot(aes(x = h, y = sup.err, lty = estimator, col = m)) + 
@@ -214,6 +186,7 @@ est_comp |>
   theme(text = element_text(size = 18)) + 
   labs(title = "Ornstein-Uhlenbeck", subtitle = "n = 100, p = 50")
 
+# Figure 8b
 est_comp |> 
   filter(n == 100, p == 50, Z == "2rv") |> 
   ggplot(aes(x = h, y = sup.err, lty = estimator, col = m)) + 
