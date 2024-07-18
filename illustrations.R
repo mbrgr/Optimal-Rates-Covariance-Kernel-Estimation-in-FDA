@@ -8,7 +8,7 @@ library(biLocPol) # please install this package from Github first. See "README.m
 
 ##### Load Data #####
 # instead of evaluating the functions all again the results can be loaded with
-load("data/figure_1_2_7.RData")
+load("data/illustrations.RData")
 
 ##### Processes #####
 # Figure of paths of the processes of the second process 
