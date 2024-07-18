@@ -1,3 +1,7 @@
+# Code contains evaluation of 'full_vs_mirrored_estimator.R' and 'Simulations_Covariance.R' files.
+# Further Figures 3, 4, 5, 6 and 8 are produced
+
+
 load("data/bw_comp_OU.RData")
 bw_comparison_tbl = Reduce(rbind, bw_comparison) |>
   as_tibble() |>

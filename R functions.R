@@ -1,5 +1,11 @@
-##### Error Decomposition #####
+##### Install biLocPol package #####
+# install.packages("devtools")
+library(devtools)
+install_github("mbrgr/biLocPol") 
 library(biLocPol)
+
+
+##### Error Decomposition #####
 
 #' @param W weights
 #' @param n amount of curves

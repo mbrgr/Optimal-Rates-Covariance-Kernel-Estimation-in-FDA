@@ -1,10 +1,13 @@
+# Code for real data example with the weather data from Nuremberg 
+# Figures 9, 10 and 11 are generated her
+
 library(tidyverse)
 library(plotly)
 
 library(lubridate)
 library(hms)
 
-library(biLocPol)
+library(biLocPol) # needs to be installed from Github. Code to install in 'R functions.R' file.
 library(future.apply)
 
 
