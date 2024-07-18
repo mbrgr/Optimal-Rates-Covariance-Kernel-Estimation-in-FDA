@@ -7,7 +7,7 @@ library(plotly)
 library(lubridate)
 library(hms)
 
-library(biLocPol) # needs to be installed from Github. Code to install in 'functions.R' file.
+library(biLocPol) # please install this package from Github first. See "README.md" file for instructions
 library(future.apply)
 
 

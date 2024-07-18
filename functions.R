@@ -1,9 +1,4 @@
-##### Install biLocPol package #####
-# install.packages("devtools")
-library(devtools)
-install_github("mbrgr/biLocPol") 
-library(biLocPol)
-
+library(biLocPol) # please install this package from Github first. See "README.md" file for instructions
 
 ##### Error Decomposition #####
 

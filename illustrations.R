@@ -1,6 +1,6 @@
 library(plotly)
 library(tidyverse)
-library(biLocPol)
+library(biLocPol) # please install this package from Github first. See "README.md" file for instructions
 
 ##### Description #####
 # Code for images of the two covariance kernels
