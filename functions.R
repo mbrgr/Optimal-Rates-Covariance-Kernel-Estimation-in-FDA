@@ -110,10 +110,6 @@ error_decomposition = function(W, n, N, Gamma = cov.ou, Gamma.arg = list(theta =
   rowMeans(erg)
 }
 
-
-
-
-
 ##### Bandwidth Evaluation #####
 
 bandwidth_evaluation = function(h, p, p.eval, n.seq, N, 
