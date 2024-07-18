@@ -7,26 +7,26 @@ library(plotly)
 library(lubridate)
 library(hms)
 
-library(biLocPol) # needs to be installed from Github. Code to install in 'R functions.R' file.
+library(biLocPol) # needs to be installed from Github. Code to install in 'functions.R' file.
 library(future.apply)
 
 
-# In produkt*.txt stehen folgende Parameter zur Verf?gung:
-# STATIONS_ID Stationsidentifikationsnummer
-# MESS_DATUM Zeitstempel yyyymmddhhmi 
+# Parameter description
+# @STATIONS_ID identification number of the weather station 
+# MESS_DATUM time of the observation given by yyyymmddhhmi 
 
-# PP_10 Luftdruck auf Stationsh?he hPa
-# TT_10 Lufttemperatur in 2m H?he ?C
-# TM5_10 Lufttemperatur 5cm H?he ?C
-# RF_10 relative Feuchte in 2m H?he %
-# TD_10 Taupunkttemperatur in 2m H?he ?C
+# PP_10 air pressure at the height of the station
+# TT_10 air temperature at the height of 2 metres (°C)
+# TM5_10 air temperatur at the height of 5 centimetres (°C)
+# RF_10 relative humidity at 2 metres
+# TD_10 dew point temperature at 2 metres (°C)
 # eor Ende data record
 
-# Fehlwerte sind mit -999 gekennzeichnet. Die Messungen sind vor dem Jahr 2000 einem Zeitstempel in
-# MEZ zugeordnet, ab dem Jahr 2000 einem Zeitstempel in UTC. Die Taupunktstemperatur ist aus der
-# Lufttemperatur in 2m H?he und der relativen Feuchtemessungen berechnet. Die Werte sind Mittelwerte ?ber
-# die Minute, welche zum Zeitstempel endet. Der Zeitstempel ist vor dem Jahr 2000 in MEZ gegeben, ab dem
-# Jahr 2000 in UTC
+# Missing values are labelled with -999. The measurements before the year 2000 are assigned a time stamp in
+# CET, from the year 2000 onwards a time stamp in UTC. The dew point temperature is calculated from the
+# air temperature at an altitude of 2 metres and the relative humidity measurements. The values are mean values over
+# the minute ending at the time stamp. The time stamp is given before the year 2000 in CET, from the
+# year 2000 in UTC
 
 
 load("data/weather_data_raw.RData")
