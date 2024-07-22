@@ -24,7 +24,7 @@ procedure for the simulations that are not contained in the “biLocPol”
 package. No data is produced here. The file “illustrations.R” contains
 the code for Figures 1, 2 and 7 as well as additional grafics with the
 processes used. All the code that is produced by this file is saved in
-the file “figure_1_2_7.Rdata” in the “data” folder. The file
+the file “illustrations.Rdata” in the “data” folder. The file
 “bw_cv_error_decomposition.r” contains the code for most of the repeated
 simulations as the bandwidth comparison, the cross validation and the
 error decomposition. The results are stored in different .Rdata files in
