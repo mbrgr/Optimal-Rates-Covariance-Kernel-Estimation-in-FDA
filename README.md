@@ -6,9 +6,10 @@
 
 This repository contains the code for the Figures of the paper “Optimal
 rates for estimating the covariance kernel from synchronously sampled
-functional data” by Hajo Holzmann and Max Berger. Note the this code
-needs the package “biLocPol” of which you can get the development
-version from [GitHub](https://github.com/) with:
+functional data” by Hajo Holzmann and Max Berger
+[arxiv](https://arxiv.org/abs/2407.13641). Note the this code needs the
+package “biLocPol” of which you can get the development version from
+[GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
