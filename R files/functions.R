@@ -256,4 +256,13 @@ cov_z_2rv = function(t){
     8/9*cos(1.25*pi*t[1])*cos(1.25*pi*t[2])
 }
 
+partial01_cov_z_2rv = function(t){
+  4/9*pi*sin(pi*t[1])*cos(pi*t[2]) -
+    10/9*pi*cos(1.25*pi*t[1])*sin(1.25*pi*t[2])
+}
+
+partial11_cov_z_2rv = function(t){
+  4/9*pi^2*cos(pi*t[1])*cos(pi*t[2]) +
+    25/18*pi^2*sin(1.25*pi*t[1])*sin(1.25*pi*t[2])
+}
 
