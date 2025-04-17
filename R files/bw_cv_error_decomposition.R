@@ -4,6 +4,7 @@ library(biLocPol) # please install this package from Github first. See "README.m
 library(future.apply)
 library(tidyverse)
 library(tictoc)
+library(plotly)
 
 #### Bandwidth Comparison ####
 
@@ -24,7 +25,7 @@ sd = 0.75
 bw_comparison = list()
 
 cl = parallel::makeCluster(parallel::detectCores( ) - 1)
-future::plan(future::cluster)
+future::plan(future::multisession)
 
 for(l in 1:length(p.seq)){
   tic()

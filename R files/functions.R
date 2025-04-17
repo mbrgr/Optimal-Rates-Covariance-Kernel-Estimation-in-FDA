@@ -148,6 +148,9 @@ bandwidth_evaluation = function(h, p, p.eval, n.seq, N,
 }
 
 
+
+
+
 ##### Cross Validation #####
 #K-Fold Cross Validation for bivariate local polynomial estimator 
 lopocv_sim = function(N, n, p, h.seq, m = 1, w.parallel = F,
