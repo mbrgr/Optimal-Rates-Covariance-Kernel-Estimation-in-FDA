@@ -51,7 +51,26 @@ N |>
   ggplot() +
   geom_line(aes(x = UHRZEIT, y = TT_10, group = JAHR*TAG, colour = JAHR), alpha = .6) + 
   labs(y = "Temp. in C°", x = "hours", title = "Temp. in August", colour = "year") + 
-  theme(text = element_text(size = 18)) 
+  theme(text = element_text(size = 14)) 
+
+N |>  
+  filter(TAG %in% tage, 
+         MONAT == 1) |> 
+  ggplot() +
+  geom_line(aes(x = UHRZEIT, y = TT_10, group = JAHR*TAG, colour = JAHR), alpha = .6) + 
+  labs(y = "Temp. in C°", x = "hours", title = "Temp. in January", colour = "year") + 
+  theme(text = element_text(size = 14)) 
+ggsave("grafics/january_temp_curves.png", device = "png", width = 5, height = 4, unit = "in")
+
+N |>  
+  filter(TAG %in% tage, 
+         MONAT == 7) |> 
+  ggplot() +
+  geom_line(aes(x = UHRZEIT, y = TT_10, group = JAHR*TAG, colour = JAHR), alpha = .6) + 
+  labs(y = "Temp. in C°", x = "hours", title = "Temp. in July", colour = "year") + 
+  theme(text = element_text(size = 14))
+ggsave("grafics/july_temp_curves.png", device = "png", width = 5, height = 4, unit = "in")
+
 
 N_wide = N |> 
   filter(TAG %in% tage) |>  # No consecutive days
