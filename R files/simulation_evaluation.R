@@ -226,5 +226,24 @@ est_comp |>
   theme(text = element_text(size = 18)) + 
   labs(title = "Process 2", subtitle = "n = 100, p = 50")
 
+# Figure 8a
+est_comp |> 
+  filter(n == 100, p == 50, Z == "OU") |> 
+  ggplot(aes(x = h, y = sup.err, pch = estimator, col = m)) + 
+  geom_point() + 
+  lims(y = c(0.03, 1.2)) +
+  labs(title = "Ornstein-Uhlenbeck", subtitle = "n = 100, p = 50")
+ggsave("Grafics/est_comp_OU_points.png", device = "png", width = 5, height = 3.8, units = "in")
+
+
+# Figure 8b
+est_comp |> 
+  filter(n == 100, p == 50, Z == "2rv") |> 
+  ggplot(aes(x = h, y = sup.err, pch = estimator, col = m)) + 
+  geom_point() + 
+  lims(y = c(0.03, 1.1))+
+  labs(title = "Process 2", subtitle = "n = 100, p = 50")
+ggsave("Grafics/est_comp_2rv_points.png", device = "png", width = 5, height = 3.8, units = "in")
+
 
 
