@@ -212,6 +212,38 @@ plot_ly(cov_est_df, x = ~x*24, y = ~y*24, z = ~cor_hat, size = .4) |>
                       yaxis = list(title = ""), 
                       zaxis = list(title = "")))
 
+
+###### July ######
+g_hat = cov_estimation(7)
+var_hat = diag(g_hat)
+var_est = tibble(var_hat, x = eval_time)
+var_est |> 
+  ggplot(aes(x = x, y = sqrt(var_hat))) + 
+  geom_line(linewidth = .7) + 
+  lims(y = c(0.2, 5)) + 
+  labs(y = NULL, x = "hour", title = "Std. deviation of temperatur in August") + 
+  theme(legend.position = "none", 
+        text = element_text(size = 18)) 
+
+cov_est_df = data.frame(x = W$x.eval, y = W$x.eval, z = g_hat)
+cs2 = list(c(0, 1), c("lightblue", "darkred"))
+
+# Plot of Covariance Kernel: Not in Paper
+plot_ly(cov_est_df, x = ~x, y = ~y, z = ~g_hat, size = .4) |> 
+  add_surface(colorscale = cs2, alpha = .3) |> 
+  layout(scene = list(xaxis = list(title = ""), 
+                      yaxis = list(title = ""), 
+                      zaxis = list(title = "")))
+
+temp = matrix(diag(g_hat), p.eval, p.eval)
+cor_hat = g_hat / sqrt( temp * t(temp) )
+
+# Plot of Correlation in July
+plot_ly(cov_est_df, x = ~x*24, y = ~y*24, z = ~cor_hat, size = .4) |> 
+  add_surface(colorscale = cs2, alpha = .3) |> 
+  layout(scene = list(xaxis = list(title = ""), 
+                      yaxis = list(title = ""), 
+                      zaxis = list(title = "")))
 ###### std_deviation ######
 
 sd_tibble_m1h02 = sapply(1:12, 
