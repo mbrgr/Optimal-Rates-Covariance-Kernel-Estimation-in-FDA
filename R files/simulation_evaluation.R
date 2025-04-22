@@ -24,6 +24,26 @@ bw_comparison_tbl |>
   theme(text = element_text(size = 18)) + 
   labs(title = "n = 400")
 
+# add: dissertation
+bw_comparison_tbl |> 
+  filter(n == 400) |> 
+  ggplot() + 
+  geom_point(aes(x = h, y = sup.err, col = p, pch = p)) + 
+  ylim(c(0.02, 0.52)) +
+  labs(title = "n = 400")
+
+ggsave("Grafics/cov_optimal_bw_n400.png", device = "png", width = 5, height = 3.8, units = "in")
+
+# add: dissertation
+bw_comparison_tbl |> 
+  ggplot() + 
+  geom_point(aes(x = h, y = sup.err, col = p, pch = p)) + 
+  lims(y = c(0, .95)) +
+  facet_wrap(n~., nrow = 1)
+ggsave("Grafics/cov_optimal_bw_various_n.png", device = "png", width = 8, height = 4, units = "in")
+
+
+
 bw_comparison_tbl |> 
   filter(n == 100, p == 75) |>
   ggplot() + 
@@ -71,6 +91,7 @@ five_fold_tbl %>%
   ggplot(aes(y = h, x = p, col = p)) + 
   geom_boxplot()
 
+
 five_fold_table = five_fold_tbl %>% 
   group_by_all() %>% 
   summarise(n = n()/1000)
@@ -94,8 +115,11 @@ five_fold_tbl_n400 = tibble(h = five_fold_cv_n400 %>% unlist(), p = gl(5, 1000, 
 five_fold_tbl_n400 %>% 
   ggplot(aes(y = h, x = p, col = p)) + 
   geom_boxplot(size = .6) + 
-  labs(title = "n = 400") +
-  theme(text = element_text(size = 18)) 
+  labs(title = "n = 400") #+
+ # theme(text = element_text(size = 18)) 
+ggsave("Grafics/cov_5fcv_bw_n400.png", device = "png", width = 5, height = 3.8, units = "in")
+
+
 
 five_fold_table_n400 = five_fold_tbl_n400 %>% 
   group_by_all() %>% 
@@ -107,8 +131,11 @@ five_fold_table_n400 %>%
   geom_point(size = 3) + 
   facet_wrap(.~p, nrow = 1) +
   ylab(NULL) + 
-  labs(title = "n = 400") +
-  theme(text = element_text(size = 18)) 
+  labs(title = "n = 400") #+
+#  theme(text = element_text(size = 18)) 
+ggsave("Grafics/cov_5fcv_bw_n400_table.png", device = "png", width = 5, height = 3.8, units = "in")
+
+
 
 five_fold_tbl_n400 %>% 
   summarise(.by = p, mean(h))
