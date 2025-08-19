@@ -64,7 +64,7 @@ sigma = 2; theta = 3
 x = observation_grid(p.eval, comp = "full")[1:p.eval, 1]
 Y = FDA_observation(n, x.design, 
                     r.process = OU, process.arg = list(alpha = theta, sigma = sigma, x0 = 0), 
-                    eps.arg = list(sd = 0.5))
+                    eps.arg = list(sd = 0.75))
 Z = observation_transformation(Y)
 
 temp = apply(Y, 1, tcrossprod) - as.vector(tcrossprod(colMeans(Y)))     
