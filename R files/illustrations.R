@@ -10,6 +10,28 @@ library(biLocPol) # please install this package from Github first. See "README.m
 # instead of evaluating the functions all again the results can be loaded with
 load("data/illustrations.RData")
 
+#### plotly Layout ####
+back_layout = function(p, x = 2, y = 1.2, z = .2) {
+  p |> layout(
+    scene = list(
+      camera = list(eye = list(x = x, y = y, z = z)),# controls the angle
+      xaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14)),
+      yaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14)),
+      zaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14))),
+    showlegend = F
+  )
+}
+
+front_layout = function(p, x = -2, y = -1.2, z = .2) {
+  p |> layout(
+    scene = list(
+      camera = list(eye = list(x = x, y = y, z = z)),# controls the angle
+      xaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14)),
+      yaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14)),
+      zaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14))),
+    showlegend = F
+  )
+}
 ##### Processes #####
 # Figure of paths of the processes of the second process 
 # not contained in the paper
@@ -20,7 +42,7 @@ obs = OU(n, t = c(0,(1:p - 0.5)/p), x0 = 0)
 obs_tibble = tibble(Y = as.vector(t(obs)), x = rep(c(0, (1:p - 0.5)/p), n), n = gl(n, p + 1)) 
 obs_tibble |> 
   ggplot(aes(x, Y, col = n)) + 
-  geom_line(aes(lty = n), size = .6) + 
+  geom_line(aes(lty = n), linewidth = .6) + 
   geom_point(size = .9) + 
   geom_abline(slope = 0, intercept = 0, lty = 4) + 
   labs(y = NULL, x = NULL) + 
@@ -67,6 +89,14 @@ figure1 = plot_ly(df.all, x = ~Var1, y = ~Var2, z = ~Z.all, size = .4) |>
                       yaxis = list(title = ""), 
                       zaxis = list(title = "")))
 figure1
+
+save_image(figure1 |> front_layout(), 
+           file = "grafics/OU_observation_n100p40theta3sigma2sd05_front.pdf", 
+           width = 600, height = 750)
+save_image(figure1 |> back_layout(), 
+           file = "grafics/OU_observation_n100p40theta3sigma2sd05_back.pdf", 
+           width = 600, height = 750)
+
 
 ##### Estimation #####
 # calculate local polynomial weights

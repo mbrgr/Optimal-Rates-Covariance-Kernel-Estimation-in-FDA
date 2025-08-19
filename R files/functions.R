@@ -269,3 +269,7 @@ partial11_cov_z_2rv = function(t){
     25/18*pi^2*sin(1.25*pi*t[1])*sin(1.25*pi*t[2])
 }
 
+
+
+
+
