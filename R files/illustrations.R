@@ -115,6 +115,10 @@ figure2a = plot_ly(df.all, x = ~Var1, y = ~Var2, z = ~Z.all, size = .4) |>
                       yaxis = list(title = ""), 
                       zaxis = list(title = "")))
 figure2a
+save_image(figure2a |> front_layout(), 
+           file = "grafics/ou_estimate_m1_h03_sd075.pdf", 
+           width = 600, height = 750)
+
 
 # calculate estimator that does not mirror the results on the diagonal (without diagonal)
 #h0_cv =  k_fold_cv(Y, H, m = 0, h.parallel = T, 
@@ -131,6 +135,10 @@ figure2b = plot_ly(df.all, x = ~Var1, y = ~Var2, z = ~Z.all, size = .4) |>
                       yaxis = list(title = ""), 
                       zaxis = list(title = "")))
 figure2b
+save_image(figure2b |> front_layout(), 
+           file = "grafics/ou_estimate_m1_h02_full_sd075.pdf", 
+           width = 600, height = 750)
+
 
 ###### Process consisting of two random variables ######
 set.seed(24)
@@ -187,6 +195,11 @@ figure7a = plot_ly() |>
                       zaxis = list(title = "")))
 figure7a
 
+save_image(figure7a |> front_layout(), 
+           file = "grafics/2rv_estimate_m1_h01.pdf", 
+           width = 600, height = 750)
+
+
 # estimation without mirroring
 Z_wd = observation_transformation(Y2, grid.type = "without diagonal")
 # h_2rv = k_fold_cv(Y, H, m = 1, h.parallel = T, 
@@ -208,3 +221,8 @@ figure7b = plot_ly() |>
                       yaxis = list(title = ""), 
                       zaxis = list(title = "")))
 figure7b
+
+save_image(figure7b |> front_layout(), 
+           file = "grafics/2rv_estimate_m1_h01_full.pdf", 
+           width = 600, height = 750)
+
