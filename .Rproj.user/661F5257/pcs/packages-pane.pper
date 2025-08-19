@@ -1,7 +1,0 @@
-{
-    "installOptions": {
-        "installFromRepository": true,
-        "libraryPath": "\\\\mathematik.uni-marburg.de/DFS/HOMES.Windows/mberger/Desktop/R_Bibliothek",
-        "installDependencies": true
-    }
-}
