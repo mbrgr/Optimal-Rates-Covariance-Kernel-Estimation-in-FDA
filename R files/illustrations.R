@@ -82,9 +82,9 @@ cov.ou.eval = matrix(apply(observation_grid(p.eval, comp = "full"), 1, function(
 # plot empirical covariances with covariance kernel
 ###### Figure 1 ######
 figure1 = plot_ly(df.all, x = ~Var1, y = ~Var2, z = ~Z.all, size = .4) |> 
-  add_markers() |> 
+  add_markers(showlegend = F) |> 
   add_surface(x = x, y = x, z = cov.ou.eval, 
-              colors = c('#BF382A', '#0C4B8E'), alpha = .3) |> 
+              colors = c('#BF382A', '#0C4B8E'), alpha = .3, showscale = FALSE) |> 
   layout(scene = list(xaxis = list(title = ""), 
                       yaxis = list(title = ""), 
                       zaxis = list(title = "")))
@@ -108,14 +108,16 @@ est = eval_weights(W, Z)
 
 # plot with estimation
 cs2 = list(c(0, 1), c("lightblue", "darkred"))
+
+##### Figure 2 #####
 figure2a = plot_ly(df.all, x = ~Var1, y = ~Var2, z = ~Z.all, size = .4) |> 
-  add_surface(x = x, y = x, z = cov.ou.eval, alpha = .3) |> 
-  add_surface(x = x, y = x, z = est, colorscale = cs2, alpha = .3)|> 
+  add_surface(x = x, y = x, z = cov.ou.eval, alpha = .3, showscale = F) |> 
+  add_surface(x = x, y = x, z = est, colorscale = cs2, alpha = .3, showscale = F)|> 
   layout(scene = list(xaxis = list(title = ""), 
                       yaxis = list(title = ""), 
                       zaxis = list(title = "")))
-figure2a
-save_image(figure2a |> front_layout(), 
+figure2a |> back_layout(x = 2, y = .8, z = .6)
+save_image(figure2a |> back_layout(x = 2, y = .8, z = .6), 
            file = "grafics/ou_estimate_m1_h03_sd075.pdf", 
            width = 600, height = 750)
 
@@ -123,19 +125,19 @@ save_image(figure2a |> front_layout(),
 # calculate estimator that does not mirror the results on the diagonal (without diagonal)
 #h0_cv =  k_fold_cv(Y, H, m = 0, h.parallel = T, 
 #                   h.parallel.environment = T)
-W0 = local_polynomial_weights(p, 0.1, p.eval, T, m = 1, grid.type = "without diagonal")
+W0 = local_polynomial_weights(p, 0.2, p.eval, T, m = 1, grid.type = "without diagonal")
 Z0 = observation_transformation(Y, grid.type = "without diagonal")
 est_standard = eval_weights(W0, Z0)
 
 # compare estimate without the diagonal and without mirroring with actual kernel
 figure2b = plot_ly(df.all, x = ~Var1, y = ~Var2, z = ~Z.all, size = .4) |> 
-  add_surface(x = x, y = x, z = cov.ou.eval, alpha = .3) |> 
-  add_surface(x = x, y = x, z = est_standard, colorscale = cs2, alpha = .3)|> 
+  add_surface(x = x, y = x, z = cov.ou.eval, alpha = .3, showscale = F) |> 
+  add_surface(x = x, y = x, z = est_standard, colorscale = cs2, alpha = .3, showscale = F)|> 
   layout(scene = list(xaxis = list(title = ""), 
                       yaxis = list(title = ""), 
                       zaxis = list(title = "")))
-figure2b
-save_image(figure2b |> front_layout(), 
+figure2b |> back_layout(x = 2, y = .8, z = .6)
+save_image(figure2b |> back_layout(x = 2, y = .8, z = .6), 
            file = "grafics/ou_estimate_m1_h02_full_sd075.pdf", 
            width = 600, height = 750)
 
