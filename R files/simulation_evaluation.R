@@ -32,7 +32,22 @@ bw_comparison_tbl |>
   ylim(c(0.02, 0.52)) +
   labs(title = "n = 400")
 
-ggsave("Grafics/cov_optimal_bw_n400.png", device = "png", width = 5, height = 3.8, units = "in")
+ggsave("Grafics/cov_optimal_bw_n400.pdf", device = "pdf", width = 5, height = 3.8, units = "in")
+
+# For review: divide by ||Gamma||_\infty 
+x = seq(0, 1, 0.001)
+sup_gamma = combn(x, 2, FUN = function(v){biLocPol::cov_ou(v, 2, 3)}) |> abs() |> max() # 0.663
+# Figure 3:
+bw_comparison_tbl |>
+  mutate(sup.err = sup.err/sup_gamma) |> 
+  filter(n == 400) |> 
+  ggplot() + 
+  geom_point(aes(x = h, y = sup.err, col = p, pch = p)) + 
+  ylim(c(0.02, .8)) +
+  theme(text = element_text(size = 18)) + 
+  labs(title = "n = 400", y = "sup.err scaled")
+
+ggsave("Grafics/cov_optimal_bw_n400_scaled.pdf", device = "pdf", width = 5, height = 3.8, units = "in")
 
 # add: dissertation
 bw_comparison_tbl |> 
@@ -40,7 +55,7 @@ bw_comparison_tbl |>
   geom_point(aes(x = h, y = sup.err, col = p, pch = p)) + 
   lims(y = c(0, .95)) +
   facet_wrap(n~., nrow = 1)
-ggsave("Grafics/cov_optimal_bw_various_n.png", device = "png", width = 8, height = 4, units = "in")
+ggsave("Grafics/cov_optimal_bw_various_n.pdf", device = "pdf", width = 8, height = 4, units = "in")
 
 
 
@@ -109,15 +124,17 @@ five_fold_tbl %>%
   summarise(.by = p, mean(h))
 
 ##### five fold cv #####
+# Figure 4
 # In Paper
 five_fold_tbl_n400 = tibble(h = five_fold_cv_n400 %>% unlist(), p = gl(5, 1000, labels = p.seq))
 # Figure 4
 five_fold_tbl_n400 %>% 
   ggplot(aes(y = h, x = p, col = p)) + 
   geom_boxplot(size = .6) + 
-  labs(title = "n = 400") #+
+  labs(title = "n = 400") +
+  lims(y = c(0,1))#+
  # theme(text = element_text(size = 18)) 
-ggsave("Grafics/cov_5fcv_bw_n400.png", device = "png", width = 5, height = 3.8, units = "in")
+ggsave("Grafics/cov_5fcv_bw_n400.pdf", device = "pdf", width = 5, height = 3.8, units = "in")
 
 
 
@@ -133,7 +150,7 @@ five_fold_table_n400 %>%
   ylab(NULL) + 
   labs(title = "n = 400") #+
 #  theme(text = element_text(size = 18)) 
-ggsave("Grafics/cov_5fcv_bw_n400_table.png", device = "png", width = 5, height = 3.8, units = "in")
+ggsave("Grafics/cov_5fcv_bw_n400_table.pdf", device = "pdf", width = 8, height = 3.8, units = "in")
 
 
 
@@ -158,12 +175,18 @@ error_decomp_tbl |>
 
 # Figure 6
 error_decomp_tbl |> 
+#  mutate(error = error/sup_gamma) |> 
   filter(p != 75) |> 
   ggplot(aes(x = n, y = error, col = term, lty = term)) + 
   geom_line(size = .6) + 
   facet_wrap(.~p, nrow = 1) +
   theme(text = element_text(size = 18)) +
   labs(y = "sup.error")
+
+ggsave("Grafics/error_decomposition.pdf", device = "pdf", width = 8, height = 3.8, units = "in")
+
+
+
 
 # Not in Paper
 error_decomp_tbl |> 
@@ -216,6 +239,7 @@ est_comp |>
   lims(y = c(0.03, 1.2)) +
   theme(text = element_text(size = 18)) + 
   labs(title = "Ornstein-Uhlenbeck", subtitle = "n = 100, p = 50")
+ggsave("Grafics/est_comp_OU_points.pdf", device = "pdf", width = 5, height = 3.8, units = "in")
 
 # Figure 8b
 est_comp |> 
@@ -225,6 +249,7 @@ est_comp |>
   lims(y = c(0.03, 1.1))+
   theme(text = element_text(size = 18)) + 
   labs(title = "Process 2", subtitle = "n = 100, p = 50")
+ggsave("Grafics/est_comp_2rv_points.pdf", device = "pdf", width = 5, height = 3.8, units = "in")
 
 # Figure 8a
 est_comp |> 
@@ -233,7 +258,7 @@ est_comp |>
   geom_point() + 
   lims(y = c(0.03, 1.2)) +
   labs(title = "Ornstein-Uhlenbeck", subtitle = "n = 100, p = 50")
-ggsave("Grafics/est_comp_OU_points.png", device = "png", width = 5, height = 3.8, units = "in")
+ggsave("Grafics/est_comp_OU_points.pdf", device = "pdf", width = 5, height = 3.8, units = "in")
 
 
 # Figure 8b
@@ -243,7 +268,7 @@ est_comp |>
   geom_point() + 
   lims(y = c(0.03, 1.1))+
   labs(title = "Process 2", subtitle = "n = 100, p = 50")
-ggsave("Grafics/est_comp_2rv_points.png", device = "png", width = 5, height = 3.8, units = "in")
+ggsave("Grafics/est_comp_2rv_points.pdf", device = "pdf", width = 5, height = 3.8, units = "in")
 
 
 
