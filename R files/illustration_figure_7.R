@@ -99,3 +99,4 @@ save_image(figure7b |> front_layout(),
            width = 600, height = 750)
 
 save.image("data/figure_7.rdata")
+
