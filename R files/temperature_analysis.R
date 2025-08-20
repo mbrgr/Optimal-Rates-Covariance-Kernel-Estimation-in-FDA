@@ -44,23 +44,27 @@ N |>
   geom_line(aes(x = UHRZEIT, y = TT_10, group = JAHR*TAG, colour = JAHR), alpha = .4) +
   facet_wrap(MONAT ~.)
 
-# Figure 9b: Temp. curves in August
+#### Figure 9b ####
+# Temp. curves in August
 N |>  
   filter(TAG %in% c(1, 15, 29), 
          MONAT == 8) |> 
   ggplot() +
   geom_line(aes(x = UHRZEIT, y = TT_10, group = JAHR*TAG, colour = JAHR), alpha = .6) + 
   labs(y = "Temp. in C°", x = "hours", title = "Temp. in August", colour = "year") + 
-  theme(text = element_text(size = 14)) 
+  theme(text = element_text()) 
 
+ggsave("grafics/august_temp_curves.pdf", device = "pdf", width = 5, height = 4, unit = "in")
+
+#### Figure 9a ####
 N |>  
   filter(TAG %in% tage, 
          MONAT == 1) |> 
   ggplot() +
   geom_line(aes(x = UHRZEIT, y = TT_10, group = JAHR*TAG, colour = JAHR), alpha = .6) + 
   labs(y = "Temp. in C°", x = "hours", title = "Temp. in January", colour = "year") + 
-  theme(text = element_text(size = 14)) 
-ggsave("grafics/january_temp_curves.png", device = "png", width = 5, height = 4, unit = "in")
+  theme(text = element_text()) 
+ggsave("grafics/january_temp_curves.pdf", device = "pdf", width = 5, height = 4, unit = "in")
 
 N |>  
   filter(TAG %in% tage, 
@@ -137,7 +141,6 @@ Wh01 = local_polynomial_weights(144, 0.1, p.eval, T, m = 1)
 eval_time = N$UHRZEIT[1:146][seq(2, 144, 2)]
 
 ###### January ######
-# Figure 9a: temp curves in January
 N |>  filter(TAG %in% c(1, 15, 29), 
              MONAT == 1) |> 
   ggplot() +
