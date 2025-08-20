@@ -1,6 +1,6 @@
 # Code contains evaluation of 'full_vs_mirrored_estimator.R' and 'Simulations_Covariance.R' files.
 # Further Figures 3, 4, 5, 6 and 8 are produced
-
+library(tidyverse)
 
 load("data/bw_comp_OU.RData")
 bw_comparison_tbl = Reduce(rbind, bw_comparison) |>
@@ -15,7 +15,7 @@ bw_comparison_tbl |>
   ylim(c(0, 0.65)) +
   theme(text = element_text(size = 18)) 
 
-# Figure 3:
+##### Figure 3 #####
 bw_comparison_tbl |> 
   filter(n == 400) |> 
   ggplot() + 
@@ -34,6 +34,7 @@ bw_comparison_tbl |>
 
 ggsave("Grafics/cov_optimal_bw_n400.pdf", device = "pdf", width = 5, height = 3.8, units = "in")
 
+###### Review #####
 # For review: divide by ||Gamma||_\infty 
 x = seq(0, 1, 0.001)
 sup_gamma = combn(x, 2, FUN = function(v){biLocPol::cov_ou(v, 2, 3)}) |> abs() |> max() # 0.663
@@ -44,97 +45,24 @@ bw_comparison_tbl |>
   ggplot() + 
   geom_point(aes(x = h, y = sup.err, col = p, pch = p)) + 
   ylim(c(0.02, .8)) +
-  theme(text = element_text(size = 18)) + 
   labs(title = "n = 400", y = "sup.err scaled")
 
 ggsave("Grafics/cov_optimal_bw_n400_scaled.pdf", device = "pdf", width = 5, height = 3.8, units = "in")
 
-# add: dissertation
-bw_comparison_tbl |> 
-  ggplot() + 
-  geom_point(aes(x = h, y = sup.err, col = p, pch = p)) + 
-  lims(y = c(0, .95)) +
-  facet_wrap(n~., nrow = 1)
-ggsave("Grafics/cov_optimal_bw_various_n.pdf", device = "pdf", width = 8, height = 4, units = "in")
 
 
-
-bw_comparison_tbl |> 
-  filter(n == 100, p == 75) |>
-  ggplot() + 
-  geom_line(aes(x = h, y = sup.err, linetype = p)) + 
-  ylim(c(0, 0.9))
-
-min_h_tibble = bw_comparison_tbl |>
-  group_by(n, p) |> 
-  slice_min(sup.err) 
-
-bw_comparison_tbl |> 
-  filter(n == 100) |> 
-  ggplot( ) + 
-  geom_line(aes(x = h, y = sup.err, col = p, linetype = p)) +
-  ylim(c(0.03, 0.65)) + 
-  labs(title = "n = 100") 
-
-##### One -Fold CV #####
-# not in paper
-load("data/one_fold_cv_n400_OU.RData")
-one_fold_tbl_n400 = tibble(h = one_fold_cv_n400 %>% unlist(), p = gl(3, 1000, labels = p.seq))
-one_fold_tbl_n400 %>% 
-  ggplot(aes(y = h, x = p, col = p)) + 
-  geom_boxplot()
-
-n400_table = one_fold_tbl_n400 %>% 
-  group_by_all() %>% 
-  summarise(n = n()/1000)
-
-n400_table %>% 
-  ggplot(aes(h, n)) + 
-  geom_point(size = 3) + 
-  ylim(c(0, 0.1))+
-  facet_wrap(.~p)
-
-one_fold_tbl_n400 %>% 
-  summarise(.by = p, mean(h))
-
-
-
-##### five fold cv #####
+#### Fugure 4 ####
 load("data/five_fold_cv_OU.RData")
-five_fold_tbl = tibble(h = five_fold_cv %>% unlist(), p = gl(5, 1000, labels = p.seq))
-five_fold_tbl %>% 
-  ggplot(aes(y = h, x = p, col = p)) + 
-  geom_boxplot()
 
-
-five_fold_table = five_fold_tbl %>% 
-  group_by_all() %>% 
-  summarise(n = n()/1000)
-
-# Figure in Appendix
-five_fold_table %>% 
-  ggplot(aes(h, n)) + 
-  geom_point(size = 3) + 
-  ylim(c(0, 0.1))+
-  facet_wrap(.~p) +
-  ylab(NULL) + 
-  labs(title = "n = 100")
-
-five_fold_tbl %>% 
-  summarise(.by = p, mean(h))
-
-##### five fold cv #####
-# Figure 4
-# In Paper
 five_fold_tbl_n400 = tibble(h = five_fold_cv_n400 %>% unlist(), p = gl(5, 1000, labels = p.seq))
 # Figure 4
 five_fold_tbl_n400 %>% 
   ggplot(aes(y = h, x = p, col = p)) + 
   geom_boxplot(size = .6) + 
   labs(title = "n = 400") +
-  lims(y = c(0,1))#+
- # theme(text = element_text(size = 18)) 
-ggsave("Grafics/cov_5fcv_bw_n400.pdf", device = "pdf", width = 5, height = 3.8, units = "in")
+  lims(y = c(0,1))
+
+ggsave("Grafics/5fold_cv_OU_n400.pdf", device = "pdf", width = 5, height = 3.8, units = "in")
 
 
 
@@ -142,22 +70,22 @@ five_fold_table_n400 = five_fold_tbl_n400 %>%
   group_by_all() %>% 
   summarise(n = n()/1000)
 
-# Figure 5
+#### Figure 5 ####
 five_fold_table_n400 %>% 
   ggplot(aes(h, n)) + 
-  geom_point(size = 3) + 
+  geom_point() + 
   facet_wrap(.~p, nrow = 1) +
   ylab(NULL) + 
   labs(title = "n = 400") #+
 #  theme(text = element_text(size = 18)) 
-ggsave("Grafics/cov_5fcv_bw_n400_table.pdf", device = "pdf", width = 8, height = 3.8, units = "in")
+ggsave("Grafics/5fold_cv_OU_n400_table.pdf", device = "pdf", width = 8, height = 3.8, units = "in")
 
 
 
 five_fold_tbl_n400 %>% 
   summarise(.by = p, mean(h))
 
-##### Error Decomposition #####
+#### Figure 6 ####
 load("data/error_decomp.RData")
 # error_decomp_arr = error_decomp_arr[, -5, ]
 error_decomp_arr |> dimnames() = list(p.seq, c("eps", "dsc", "prc", "mix", "sup"), n.seq)
@@ -173,14 +101,12 @@ error_decomp_tbl |>
   filter(n == 400, term == "sup") |> 
   print(n = 100) 
 
-# Figure 6
 error_decomp_tbl |> 
 #  mutate(error = error/sup_gamma) |> 
   filter(p != 75) |> 
   ggplot(aes(x = n, y = error, col = term, lty = term)) + 
   geom_line(size = .6) + 
   facet_wrap(.~p, nrow = 1) +
-  theme(text = element_text(size = 18)) +
   labs(y = "sup.error")
 
 ggsave("Grafics/error_decomposition.pdf", device = "pdf", width = 8, height = 3.8, units = "in")
@@ -231,23 +157,21 @@ est_comp = rbind(OU_m0, OU_m1,
   mutate(estimator = as.factor(estimator), 
          m = as.factor(m), Z = as.factor(Z))
 
-# Figure 8a
+#### Figure 8a ####
 est_comp |> 
   filter(n == 100, p == 50, Z == "OU") |> 
   ggplot(aes(x = h, y = sup.err, lty = estimator, col = m)) + 
   geom_line(size = .6) + 
   lims(y = c(0.03, 1.2)) +
-  theme(text = element_text(size = 18)) + 
   labs(title = "Ornstein-Uhlenbeck", subtitle = "n = 100, p = 50")
 ggsave("Grafics/est_comp_OU_points.pdf", device = "pdf", width = 5, height = 3.8, units = "in")
 
-# Figure 8b
+#### Figure 8b ####
 est_comp |> 
   filter(n == 100, p == 50, Z == "2rv") |> 
   ggplot(aes(x = h, y = sup.err, lty = estimator, col = m)) + 
   geom_line(size = .6) + 
   lims(y = c(0.03, 1.1))+
-  theme(text = element_text(size = 18)) + 
   labs(title = "Process 2", subtitle = "n = 100, p = 50")
 ggsave("Grafics/est_comp_2rv_points.pdf", device = "pdf", width = 5, height = 3.8, units = "in")
 
