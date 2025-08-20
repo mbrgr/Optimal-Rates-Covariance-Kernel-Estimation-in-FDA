@@ -117,8 +117,8 @@ figure2a = plot_ly(df.all, x = ~Var1, y = ~Var2, z = ~Z.all, size = .4) |>
   layout(scene = list(xaxis = list(title = ""), 
                       yaxis = list(title = ""), 
                       zaxis = list(title = "")))
-figure2a |> back_layout(x = 2, y = .8, z = .6)
-save_image(figure2a |> back_layout(x = 2, y = .8, z = .6), 
+figure2a |> back_layout(x = 3, y = .8, z = .7)
+save_image(figure2a |> back_layout(x = 3, y = .8, z = .7), 
            file = "grafics/ou_estimate_m1_h03_sd075.pdf", 
            width = 600, height = 750)
 
@@ -137,8 +137,8 @@ figure2b = plot_ly(df.all, x = ~Var1, y = ~Var2, z = ~Z.all, size = .4) |>
   layout(scene = list(xaxis = list(title = ""), 
                       yaxis = list(title = ""), 
                       zaxis = list(title = "")))
-figure2b |> back_layout(x = 2, y = .8, z = .6)
-save_image(figure2b |> back_layout(x = 2, y = .8, z = .6), 
+figure2b |> back_layout(x = 3, y = .8, z = .7)
+save_image(figure2b |> back_layout(x = 3, y = .8, z = .7), 
            file = "grafics/ou_estimate_m1_h02_full_sd075.pdf", 
            width = 600, height = 750)
 

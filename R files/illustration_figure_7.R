@@ -8,6 +8,28 @@ library(biLocPol) # please install this package from Github first. See "README.m
 # instead of evaluating the functions all again the results can be loaded with
 load("data/figure_7.RData")
 source("R files/functions.R")
+#### plotly Layout ####
+back_layout = function(p, x = 2, y = 1.2, z = .2) {
+  p |> layout(
+    scene = list(
+      camera = list(eye = list(x = x, y = y, z = z)),# controls the angle
+      xaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14)),
+      yaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14)),
+      zaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14))),
+    showlegend = F
+  )
+}
+
+front_layout = function(p, x = -2, y = -1.2, z = .2) {
+  p |> layout(
+    scene = list(
+      camera = list(eye = list(x = x, y = y, z = z)),# controls the angle
+      xaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14)),
+      yaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14)),
+      zaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14))),
+    showlegend = F
+  )
+}
 
 ###### Process consisting of two random variables ######
 set.seed(24)
@@ -67,7 +89,7 @@ figure7a = plot_ly() |>
                       zaxis = list(title = "")))
 figure7a
 
-save_image(figure7a |> front_layout(), 
+save_image(figure7a |> back_layout(x = 2, y = 1.2, z = 1.4), 
            file = "grafics/2rv_estimate_m1_h01.pdf", 
            width = 600, height = 750)
 
@@ -94,7 +116,7 @@ figure7b = plot_ly() |>
                       zaxis = list(title = "")))
 figure7b
 
-save_image(figure7b |> front_layout(), 
+save_image(figure7b |> back_layout(x = 2, y = 1.2, z = 1.4), 
            file = "grafics/2rv_estimate_m1_h01_full.pdf", 
            width = 600, height = 750)
 
