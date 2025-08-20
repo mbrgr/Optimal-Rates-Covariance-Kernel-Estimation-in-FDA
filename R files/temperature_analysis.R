@@ -1,5 +1,5 @@
 # Code for real data example with the weather data from Nuremberg 
-# Figures 9, 10 and 11 are generated her
+# Figures 9, 10 and 11 are generated here
 
 library(tidyverse)
 library(plotly)
@@ -9,6 +9,33 @@ library(hms)
 
 library(biLocPol) # please install this package from Github first. See "README.md" file for instructions
 library(future.apply)
+
+#### plotly Layout ####
+back_layout = function(p, x = 2, y = 1.2, z = .2) {
+  p |> layout(
+    scene = list(
+      camera = list(eye = list(x = x, y = y, z = z)),# controls the angle
+      xaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14)),
+      yaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14)),
+      zaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14))),
+    showlegend = F
+  )
+}
+
+front_layout = function(p, x = -2, y = -1.2, z = .2) {
+  p |> layout(
+    scene = list(
+      camera = list(eye = list(x = x, y = y, z = z)),# controls the angle
+      xaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14)),
+      yaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14)),
+      zaxis = list(title = list(text = "", font = list(size = 24)), tickfont = list(size = 14))),
+    showlegend = F
+  )
+}
+
+
+#### Results ####
+load("data/temperature_analysis.rdata")
 
 
 # Parameter description
@@ -175,12 +202,16 @@ temp = matrix(diag(g_hat1), p.eval, p.eval)
 cor_hat1 = g_hat1 / sqrt( temp * t(temp) )
 
 #### Figure 11a ####
-plot_ly(cov_est_df1, x = ~x*24, y = ~y*24, z = ~cor_hat1, size = .4) |> 
-  add_surface(colorscale = cs2, alpha = .3) |> 
+# january
+figure11a = plot_ly(cov_est_df1, x = ~x*24, y = ~y*24, z = ~cor_hat1, size = .4) |> 
+  add_surface(colorscale = cs2, alpha = .3, showscale = F) |> 
   layout(scene = list(xaxis = list(title = ""), 
                       yaxis = list(title = ""), 
-                      zaxis = list(title = "")))
-
+                      zaxis = list(title = "")))  |> front_layout(z = 1)
+figure11a
+save_image(figure11a, 
+           file = "grafics/january_correlation_h02.pdf", 
+           width = 600, height = 750)
 
 
 ###### August ######
@@ -203,17 +234,22 @@ plot_ly(cov_est_df, x = ~x, y = ~y, z = ~g_hat, size = .4) |>
   add_surface(colorscale = cs2, alpha = .3) |> 
   layout(scene = list(xaxis = list(title = ""), 
                       yaxis = list(title = ""), 
-                      zaxis = list(title = "")))
+                      zaxis = list(title = ""))) 
 
 temp = matrix(diag(g_hat), p.eval, p.eval)
 cor_hat = g_hat / sqrt( temp * t(temp) )
 
 #### Figure 11 b ####
-plot_ly(cov_est_df, x = ~x*24, y = ~y*24, z = ~cor_hat, size = .4) |> 
-  add_surface(colorscale = cs2, alpha = .3) |> 
+figure11b = plot_ly(cov_est_df, x = ~x*24, y = ~y*24, z = ~cor_hat, size = .4) |> 
+  add_surface(colorscale = cs2, alpha = .3, showscale = F) |> 
   layout(scene = list(xaxis = list(title = ""), 
                       yaxis = list(title = ""), 
-                      zaxis = list(title = "")))
+                      zaxis = list(title = "")))|>
+  front_layout(z = 1)
+figure11b
+save_image(figure11b, 
+           file = "grafics/august_correlation_h02.pdf", 
+           width = 600, height = 750)
 
 
 ###### July ######
@@ -280,7 +316,7 @@ sd_tibble = sd_tibble_m1h01 |>
 sd_tibble$time  = sd_tibble$time |> as.POSIXct(format = "%H:%M")
 
 #### Figure 10 ####
-sd_tibble |> 
+sd_plot = sd_tibble |> 
   ggplot(aes(x = time, y = sd, lty = h, col = h)) + 
   geom_line(linewidth = .8) + 
   lims(y = c(0.2, 6)) + 
@@ -290,3 +326,10 @@ sd_tibble |>
   scale_linetype_manual(values = c(2,5,4), name = "h (min)") + 
   scale_color_manual(values = 1:3, name = "h (min)") + 
   scale_x_datetime(date_breaks = "8 hours", date_labels = "%H:%M")
+sd_plot
+
+ggsave("grafics/sd_all_months.pdf", device = "pdf")
+rm(W)
+rm(Wh01)
+rm(Wh05)
+save.image("data/temperature_analysis.rdata")
