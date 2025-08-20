@@ -109,7 +109,7 @@ plot_ly(df_all, size = .4) |>
   add_markers(x = ~Var1, y = ~Var2, z = ~empirical_cov_all) |> 
   add_markers(x = ~Var1, y = ~Var2, z = ~empirical_cov_filtered, alpha = 0.4)
 
-#### NA Count #####
+## NA Count 
 N |>  summarise(.by = c(JAHR, MONAT, TAG), 
                 n = n(), mean = mean(TT_10)) |> 
   filter(n == 144) |> 
@@ -174,7 +174,7 @@ plot_ly(cov_est_df1, x = ~x, y = ~y, z = ~g_hat1, size = .4) |>
 temp = matrix(diag(g_hat1), p.eval, p.eval)
 cor_hat1 = g_hat1 / sqrt( temp * t(temp) )
 
-# Figure 11a
+#### Figure 11a ####
 plot_ly(cov_est_df1, x = ~x*24, y = ~y*24, z = ~cor_hat1, size = .4) |> 
   add_surface(colorscale = cs2, alpha = .3) |> 
   layout(scene = list(xaxis = list(title = ""), 
@@ -208,7 +208,7 @@ plot_ly(cov_est_df, x = ~x, y = ~y, z = ~g_hat, size = .4) |>
 temp = matrix(diag(g_hat), p.eval, p.eval)
 cor_hat = g_hat / sqrt( temp * t(temp) )
 
-# Figure 11b: Plot of Correlation in August.
+#### Figure 11 b ####
 plot_ly(cov_est_df, x = ~x*24, y = ~y*24, z = ~cor_hat, size = .4) |> 
   add_surface(colorscale = cs2, alpha = .3) |> 
   layout(scene = list(xaxis = list(title = ""), 
@@ -279,7 +279,7 @@ sd_tibble = sd_tibble_m1h01 |>
 
 sd_tibble$time  = sd_tibble$time |> as.POSIXct(format = "%H:%M")
 
-# Figure 10: all standard deviations. 
+#### Figure 10 ####
 sd_tibble |> 
   ggplot(aes(x = time, y = sd, lty = h, col = h)) + 
   geom_line(linewidth = .8) + 
